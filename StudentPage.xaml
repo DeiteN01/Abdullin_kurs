@@ -36,7 +36,7 @@
             <StackPanel Orientation="Vertical" Margin="10" HorizontalAlignment="Right">
                 <TextBlock Text="Фильтрация по оцениванию" FontSize="15" />
                 <ComboBox Name="RangComboBox" Width="160" FontSize="15" SelectionChanged="RangComboBox_SelectionChanged">
-                    <ComboBoxItem Content="Все" />
+                    <ComboBoxItem Content="Все"/>
                     <ComboBoxItem Content="Отличник" />
                     <ComboBoxItem Content="Хорошист" />
                     <ComboBoxItem Content="Троечник" />
@@ -67,10 +67,11 @@
                             <RowDefinition Height="*" />
                             <RowDefinition Height="*" />
                             <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
                         <!-- Фиксированный размер для изображения -->
-                        <Image Width="300" Height="300" Grid.Column="0" Stretch="Fill" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.RowSpan="4">
+                        <Image Width="300" Height="300" Grid.Column="0" Stretch="Fill" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.RowSpan="5">
                             <Image.Source>
                                 <Binding Path="Фото">
                                     <Binding.TargetNullValue>
@@ -93,7 +94,7 @@
 
 
                         <TextBlock Text="{Binding Пол, StringFormat='Пол: {0}'}" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" FontSize="16" Margin="5,5,0,0" />
-                        <TextBlock Text="{Binding Оценивание}" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Left" FontSize="16" Margin="-155,5,0,0" />
+                        <TextBlock Text="{Binding Успеваемость, StringFormat='Успеваемость: {0}'}" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left" FontSize="16" Margin="7.5,0,0,0" />
                         <TextBlock Text="{Binding Год_рождения, StringFormat='Год рождения: {0:dd.MM.yyyy}'}" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" FontSize="16" Margin="5,5,0,0" />
                         <TextBlock Text="{Binding Адрес, StringFormat='Адрес проживания: {0}'}" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" FontSize="16" Margin="5,5,0,0" />
                         <TextBlock Text="{Binding Телефон, StringFormat='Телефон: {0}'}" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left" FontSize="16" Margin="5,-25,0,0" />
