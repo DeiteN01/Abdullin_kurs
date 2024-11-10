@@ -8,8 +8,8 @@
       d:DesignHeight="1080" d:DesignWidth="1080"
       Title="AddEditPage" FontFamily="Comic Sans MS">
 
-    <ScrollViewer>
-        <Grid Background="#00FFFF">
+    <ScrollViewer> 
+        <Grid Background="AliceBlue">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="150"/>
                 <ColumnDefinition Width="300"/>

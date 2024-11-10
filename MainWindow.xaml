@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Abdullin_kurs"
         mc:Ignorable="d"
               d:DesignHeight="1080" d:DesignWidth="1080" Title="AbdullinStudent" FontFamily="Comic Sans MS">
-    <Grid Background="#00FFFF">
+    <Grid Background="AliceBlue">
         <Grid.RowDefinitions>
             <RowDefinition Height="60"/>
             <!-- Уменьшена высота заголовка -->

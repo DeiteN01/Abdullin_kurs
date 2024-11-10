@@ -8,7 +8,7 @@
       d:DesignHeight="1080" d:DesignWidth="1080"
       Title="StudentPage" FontFamily="Comic Sans MS">
 
-    <Grid Background="#00FFFF">
+    <Grid Background="AliceBlue">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
@@ -47,7 +47,10 @@
         <Button Content="Добавить" Name="AddButton" Click="AddButton_Click"
                 HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="175" Height="30" Margin="5" />
 
-        <ListView Name="ProductListView" Grid.Row="2">
+        <ListView Name="ProductListView" Grid.Row="2"
+          VirtualizingStackPanel.ScrollUnit="Pixel"
+          VirtualizingPanel.IsVirtualizing="True">
+
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid>
@@ -80,14 +83,19 @@
                         </Image>
 
                         <!-- Объединенное ФИО -->
-                        <TextBlock Text="{Binding Фамилия}" Grid.Column="1" Grid.Row="0" FontSize="20" FontWeight="Bold" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" Margin="5,5,0,0" />
-                        <TextBlock Text="{Binding Имя}" Grid.Column="2" Grid.Row="0" FontSize="20" FontWeight="Bold" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" Margin="-145,5,0,0" />
-                        <TextBlock Text="{Binding Отчество}" Grid.Column="3" Grid.Row="0" FontSize="20" FontWeight="Bold" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" Margin="-145,5,0,0" />
+                        <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding Фамилия}" FontSize="20" FontWeight="Bold" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" Margin="5,5,0,0" />
+                            <TextBlock Text=" " FontSize="20" />
+                            <TextBlock Text="{Binding Имя}" FontSize="20" FontWeight="Bold" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" Margin="5,5,0,0" />
+                            <TextBlock Text=" " FontSize="20" />
+                            <TextBlock Text="{Binding Отчество}" FontSize="20" FontWeight="Bold" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" Margin="5,5,0,0" />
+                        </StackPanel>
 
-                        <TextBlock Text="{Binding Пол}" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" FontSize="16" Margin="5,5,0,0" />
+
+                        <TextBlock Text="{Binding Пол, StringFormat='Пол: {0}'}" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" FontSize="16" Margin="5,5,0,0" />
                         <TextBlock Text="{Binding Оценивание}" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Left" FontSize="16" Margin="-155,5,0,0" />
                         <TextBlock Text="{Binding Год_рождения, StringFormat='Год рождения: {0:dd.MM.yyyy}'}" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" FontSize="16" Margin="5,5,0,0" />
-                        <TextBlock Text="{Binding Адрес, StringFormat='Адрес проживания: {0}'}" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Right" FontSize="16" Margin="0,5,0,0" />
+                        <TextBlock Text="{Binding Адрес, StringFormat='Адрес проживания: {0}'}" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" FontSize="16" Margin="5,5,0,0" />
                         <TextBlock Text="{Binding Телефон, StringFormat='Телефон: {0}'}" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left" FontSize="16" Margin="5,-25,0,0" />
 
                         <!-- Кнопки -->
