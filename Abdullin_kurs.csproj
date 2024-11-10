@@ -210,6 +210,7 @@
       <DependentUpon>AbdullinModel.edmx</DependentUpon>
       <LastGenOutput>AbdullinModel.cs</LastGenOutput>
     </Content>
+    <Resource Include="Resources\29.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
