@@ -21,19 +21,19 @@ namespace Abdullin_kurs
 
         private void UpdateProductPage()
         {
-            var currentProducts = AbdullinDBEntities.GetContext().Студенты.ToList();
+            var students = AbdullinDBEntities.GetContext().Студенты.ToList();
 
             // Поиск
-            currentProducts = currentProducts.Where(p => p.Фамилия.ToLower().Contains(SearchTextBox.Text.ToLower())).ToList();
+            students = students.Where(p => p.Фамилия.ToLower().Contains(SearchTextBox.Text.ToLower())).ToList();
 
             // Сортировка
             if (RadioButtonUp.IsChecked.Value)
             {
-                currentProducts = currentProducts.OrderBy(p => p.Год_рождения).ToList();
+                students = students.OrderBy(p => p.Год_рождения).ToList();
             }
             if (RadioButtonDown.IsChecked.Value)
             {
-                currentProducts = currentProducts.OrderByDescending(p => p.Год_рождения).ToList();
+                students = students.OrderByDescending(p => p.Год_рождения).ToList();
             }
 
             // Фильтрация по выбранной категории из ComboBox
@@ -42,21 +42,21 @@ namespace Abdullin_kurs
                 case 0: // Все
                     break;
                 case 1: // Отличники
-                    currentProducts = currentProducts.Where(p => p.Успеваемость == "Отличник").ToList();
+                    students = students.Where(p => p.Успеваемость == "Отличник").ToList();
                     break;
                 case 2: // Хорошисты
-                    currentProducts = currentProducts.Where(p => p.Успеваемость == "Хорошист").ToList();
+                    students = students.Where(p => p.Успеваемость == "Хорошист").ToList();
                     break;
                 case 3: // Троечники
-                    currentProducts = currentProducts.Where(p => p.Успеваемость == "Троечник").ToList();
+                    students = students.Where(p => p.Успеваемость == "Троечник").ToList();
                     break;
                 default:
                     break;
             }
 
-            ProductListView.ItemsSource = currentProducts;
+            ProductListView.ItemsSource = students;
 
-            int ProductCount = currentProducts.Count();
+            int ProductCount = students.Count();
             ProductCountTextBlock.Text = ProductCount.ToString();
         }
 
