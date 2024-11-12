@@ -115,7 +115,7 @@ namespace Abdullin_kurs
 
         private void EditButton_Click(object sender, RoutedEventArgs e)
         {
-            Manager.MainFrame.Navigate(new AddEditPage((sender as Button).DataContext as Студенты));
+            Manager.MainFrame.Navigate(new AddEditPage((sender as Button).DataContext as StudentWithAverageScore));
             UpdateStudentPage();
         }
 

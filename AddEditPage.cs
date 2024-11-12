@@ -12,12 +12,12 @@ namespace Abdullin_kurs
         private Студенты _currentChel;
 
         // Конструктор для создания нового или редактирования существующего студента
-        public AddEditPage(Студенты SelectedChel = null)
+        public AddEditPage(StudentWithAverageScore SelectedChel = null)
         {
             InitializeComponent();
 
-            _currentChel = SelectedChel ?? new Студенты(); // Если SelectedChel == null, создаём новый объект
-
+            _currentChel = SelectedChel.Student ?? new Студенты(); // Если SelectedChel == null, создаём новый объект
+            
             //if (_currentChel.Студент_ID != 0)
             //{
             //    ComboType.SelectedIndex = 0; // Это можно изменить в зависимости от вашего логики
