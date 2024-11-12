@@ -90,7 +90,7 @@ private void UpdateStudentPage()
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            var currentClient = StudentListView.SelectedItem as Студенты;
+            var currentClient = (StudentListView.SelectedItem as StudentWithAverageScore).Student;
             if (currentClient == null)
             {
                 MessageBox.Show("Пожалуйста, выберите запись для удаления.");

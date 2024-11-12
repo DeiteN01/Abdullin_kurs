@@ -16,7 +16,7 @@ namespace Abdullin_kurs
         {
             InitializeComponent();
 
-            _currentChel = SelectedChel.Student ?? new Студенты(); // Если SelectedChel == null, создаём новый объект
+            _currentChel = (SelectedChel == null || SelectedChel.Student == null) ? new Студенты() : SelectedChel.Student;
 
             DataContext = _currentChel;
         }
@@ -46,11 +46,6 @@ namespace Abdullin_kurs
             if (_currentChel.Группа_ID <= 0) // Проверка на валидность группы
             {
                 errors.AppendLine("Укажите группу студента");
-            }
-
-            if (_currentChel.Год_рождения == null) // Проверка на год рождения
-            {
-                errors.AppendLine("Укажите год рождения студента");
             }
 
             if (string.IsNullOrWhiteSpace(_currentChel.Отчество)) // Проверка на отчество
