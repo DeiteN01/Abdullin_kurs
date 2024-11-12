@@ -34,7 +34,7 @@
             </StackPanel>
 
             <StackPanel Orientation="Vertical" Margin="10" HorizontalAlignment="Right">
-                <TextBlock Text="Фильтрация по оцениванию" FontSize="15" />
+                <TextBlock Text="Фильтрация по успеваемости" FontSize="15" />
                 <ComboBox Name="RangComboBox" Width="160" FontSize="15" SelectionChanged="RangComboBox_SelectionChanged">
                     <ComboBoxItem Content="Все"/>
                     <ComboBoxItem Content="Отличник" />
@@ -92,11 +92,7 @@
                             <TextBlock Text="{Binding Student.Отчество}" FontSize="20" FontWeight="Bold" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" Margin="5,5,0,0" />
                         </StackPanel>
 
-
-                        <!--<TextBlock Text="{Binding Пол, StringFormat='Пол: {0}'}" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" FontSize="16" Margin="5,5,0,0" />-->
-                        <!--<TextBlock Text="{Binding Успеваемость, StringFormat='Успеваемость: {0}'}" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left" FontSize="16" Margin="7.5,0,0,0" />-->
                         <TextBlock Text="{Binding AverageScore, StringFormat='Средний балл: {0}'}" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" FontSize="16" Margin="5,5,0,0" />
-                        <!--<TextBlock Text="{Binding Адрес, StringFormat='Адрес проживания: {0}'}" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" FontSize="16" Margin="5,5,0,0" />-->
                         <TextBlock Text="{Binding Student.Телефон, StringFormat='Телефон: {0}'}" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left" FontSize="16" Margin="5,-25,0,0" />
 
                         <!-- Кнопки -->

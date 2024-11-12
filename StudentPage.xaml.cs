@@ -19,68 +19,69 @@ namespace Abdullin_kurs
             ProductMaxCountTextBlock.Text = StudentsMaxCount.ToString();
         }
 
-        private void UpdateStudentPage()
+private void UpdateStudentPage()
+{
+    var students = AbdullinDBEntities.GetContext().Студенты.ToList();
+
+    // Поиск
+    students = students.Where(p => p.Фамилия.ToLower().Contains(SearchTextBox.Text.ToLower())).ToList();
+    
+    List<StudentWithAverageScore> studentsWithScores = new List<StudentWithAverageScore>();
+
+    foreach (var student in students)
+    {
+        double ScoreSum = 0;
+        double counter = 0;
+
+        foreach (var ведомость in student.Ведомость_успеваемости)
         {
-            var students = AbdullinDBEntities.GetContext().Студенты.ToList();
-
-            // Поиск
-            students = students.Where(p => p.Фамилия.ToLower().Contains(SearchTextBox.Text.ToLower())).ToList();
-
-            // Сортировка
-            if (RadioButtonUp.IsChecked.Value)
-            {
-                students = students.OrderBy(p => p.Год_рождения).ToList();
-            }
-            if (RadioButtonDown.IsChecked.Value)
-            {
-                students = students.OrderByDescending(p => p.Год_рождения).ToList();
-            }
-
-            // Фильтрация по выбранной категории из ComboBox
-            switch (RangComboBox.SelectedIndex)
-            {
-                case 0: // Все
-                    break;
-                case 1: // Отличники
-                    students = students.Where(p => p.Успеваемость == "Отличник").ToList();
-                    break;
-                case 2: // Хорошисты
-                    students = students.Where(p => p.Успеваемость == "Хорошист").ToList();
-                    break;
-                case 3: // Троечники
-                    students = students.Where(p => p.Успеваемость == "Троечник").ToList();
-                    break;
-                default:
-                    break;
-            }
-
-            List<StudentWithAverageScore> studentsWithScores = new List<StudentWithAverageScore>();
-
-            foreach (var student in students)
-            {
-                double ScoreSum = 0;
-                double counter = 0;
-
-                foreach (var ведомость in student.Ведомость_успеваемости)
-                {
-                    ScoreSum += double.Parse(ведомость.Оценка.ToString());
-                    counter++;
-                }
-
-                double averageScore = counter > 0 ? ScoreSum / counter : 0;
-
-                studentsWithScores.Add(new StudentWithAverageScore
-                {
-                    Student = student,
-                    AverageScore = averageScore
-                });
-            }
-
-            StudentListView.ItemsSource = studentsWithScores;
-
-            int StudentCount = studentsWithScores.Count;
-            StudentCountTextBlock.Text = StudentCount.ToString();
+            ScoreSum += double.Parse(ведомость.Оценка.ToString());
+            counter++;
         }
+
+        double averageScore = counter > 0 ? ScoreSum / counter : 0;
+
+        studentsWithScores.Add(new StudentWithAverageScore
+        {
+            Student = student,
+            AverageScore = averageScore
+        });
+    }
+
+    // Сортировка по среднему баллу
+    if (RadioButtonUp.IsChecked.Value)
+    {
+        studentsWithScores = studentsWithScores.OrderBy(p => p.AverageScore).ToList();
+    }
+    if (RadioButtonDown.IsChecked.Value)
+    {
+        studentsWithScores = studentsWithScores.OrderByDescending(p => p.AverageScore).ToList();
+    }
+
+    // Фильтрация по среднему баллу
+    switch (RangComboBox.SelectedIndex)
+    {
+        case 0:
+            break;
+        case 1:
+            studentsWithScores = studentsWithScores.Where(p => p.AverageScore == 5.0).ToList();
+            break;
+        case 2:
+            studentsWithScores = studentsWithScores.Where(p => p.AverageScore >= 4 && p.AverageScore < 5).ToList();
+            break;
+        case 3:
+            studentsWithScores = studentsWithScores.Where(p => p.AverageScore < 4).ToList();
+            break;
+        default:
+            break;
+    }
+
+    StudentListView.ItemsSource = studentsWithScores;
+
+    int StudentCount = studentsWithScores.Count;
+    StudentCountTextBlock.Text = StudentCount.ToString();
+}
+
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
