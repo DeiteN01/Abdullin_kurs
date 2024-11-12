@@ -11,15 +11,15 @@ namespace Abdullin_kurs
         public StudentPage()
         {
             InitializeComponent();
-            var currentTour = AbdullinDBEntities.GetContext().Студенты.ToList();
-            ProductListView.ItemsSource = currentTour;
+            var StudentsList = AbdullinDBEntities.GetContext().Студенты.ToList();
+            StudentListView.ItemsSource = StudentsList;
             RangComboBox.SelectedIndex = 0;
-            UpdateProductPage();
-            int ProductMaxCount = currentTour.Count;
-            ProductMaxCountTextBlock.Text = ProductMaxCount.ToString();
+            UpdateStudentPage();
+            int StudentsMaxCount = StudentsList.Count;
+            ProductMaxCountTextBlock.Text = StudentsMaxCount.ToString();
         }
 
-        private void UpdateProductPage()
+        private void UpdateStudentPage()
         {
             var students = AbdullinDBEntities.GetContext().Студенты.ToList();
 
@@ -54,10 +54,32 @@ namespace Abdullin_kurs
                     break;
             }
 
-            ProductListView.ItemsSource = students;
+            List<StudentWithAverageScore> studentsWithScores = new List<StudentWithAverageScore>();
 
-            int ProductCount = students.Count();
-            ProductCountTextBlock.Text = ProductCount.ToString();
+            foreach (var student in students)
+            {
+                double ScoreSum = 0;
+                double counter = 0;
+
+                foreach (var ведомость in student.Ведомость_успеваемости)
+                {
+                    ScoreSum += double.Parse(ведомость.Оценка.ToString());
+                    counter++;
+                }
+
+                double averageScore = counter > 0 ? ScoreSum / counter : 0;
+
+                studentsWithScores.Add(new StudentWithAverageScore
+                {
+                    Student = student,
+                    AverageScore = averageScore
+                });
+            }
+
+            StudentListView.ItemsSource = studentsWithScores;
+
+            int StudentCount = studentsWithScores.Count;
+            StudentCountTextBlock.Text = StudentCount.ToString();
         }
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
@@ -67,7 +89,7 @@ namespace Abdullin_kurs
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            var currentClient = ProductListView.SelectedItem as Студенты;
+            var currentClient = StudentListView.SelectedItem as Студенты;
             if (currentClient == null)
             {
                 MessageBox.Show("Пожалуйста, выберите запись для удаления.");
@@ -82,7 +104,7 @@ namespace Abdullin_kurs
                     AbdullinDBEntities.GetContext().Студенты.Remove(currentClient);
                     AbdullinDBEntities.GetContext().SaveChanges();
                     MessageBox.Show("Запись успешно удалена.");
-                    UpdateProductPage(); // Обновляем данные после успешного удаления
+                    UpdateStudentPage(); // Обновляем данные после успешного удаления
                 }
                 catch (Exception ex)
                 {
@@ -94,27 +116,27 @@ namespace Abdullin_kurs
         private void EditButton_Click(object sender, RoutedEventArgs e)
         {
             Manager.MainFrame.Navigate(new AddEditPage((sender as Button).DataContext as Студенты));
-            UpdateProductPage();
+            UpdateStudentPage();
         }
 
         private void RadioButtonUp_Checked(object sender, RoutedEventArgs e)
         {
-            UpdateProductPage();
+            UpdateStudentPage();
         }
 
         private void RadioButtonDown_Checked(object sender, RoutedEventArgs e)
         {
-            UpdateProductPage();
+            UpdateStudentPage();
         }
 
         private void RangComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            UpdateProductPage();
+            UpdateStudentPage();
         }
 
         private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            UpdateProductPage();
+            UpdateStudentPage();
         }
     }
 }
