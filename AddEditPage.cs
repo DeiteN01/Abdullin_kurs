@@ -18,10 +18,10 @@ namespace Abdullin_kurs
 
             _currentChel = SelectedChel ?? new Студенты(); // Если SelectedChel == null, создаём новый объект
 
-            if (_currentChel.Студент_ID != 0)
-            {
-                ComboType.SelectedIndex = 0; // Это можно изменить в зависимости от вашего логики
-            }
+            //if (_currentChel.Студент_ID != 0)
+            //{
+            //    ComboType.SelectedIndex = 0; // Это можно изменить в зависимости от вашего логики
+            //}
 
             DataContext = _currentChel;
         }
@@ -53,14 +53,14 @@ namespace Abdullin_kurs
                 errors.AppendLine("Укажите группу студента");
             }
 
-            if (ComboType.SelectedItem == null) // Проверка на обязательность должности
-            {
-                errors.AppendLine("Укажите успеваемость студента");
-            }
-            else
-            {
-                _currentChel.Успеваемость = (ComboType.SelectedItem as TextBlock)?.Text; // Заполняем должность (Оценка)
-            }
+            //if (ComboType.SelectedItem == null) // Проверка на обязательность должности
+            //{
+            //    errors.AppendLine("Укажите успеваемость студента");
+            //}
+            //else
+            //{
+            //    _currentChel.Успеваемость = (ComboType.SelectedItem as TextBlock)?.Text; // Заполняем должность (Оценка)
+            //}
 
             if (_currentChel.Год_рождения == null) // Проверка на год рождения
             {
@@ -124,6 +124,11 @@ namespace Abdullin_kurs
                     MessageBox.Show($"Ошибка при удалении: {ex.Message}");
                 }
             }
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
         }
     }
 }

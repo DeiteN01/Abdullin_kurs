@@ -93,10 +93,10 @@
                         </StackPanel>
 
 
-                        <TextBlock Text="{Binding Пол, StringFormat='Пол: {0}'}" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" FontSize="16" Margin="5,5,0,0" />
-                        <TextBlock Text="{Binding Успеваемость, StringFormat='Успеваемость: {0}'}" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left" FontSize="16" Margin="7.5,0,0,0" />
-                        <TextBlock Text="{Binding Год_рождения, StringFormat='Год рождения: {0:dd.MM.yyyy}'}" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" FontSize="16" Margin="5,5,0,0" />
-                        <TextBlock Text="{Binding Адрес, StringFormat='Адрес проживания: {0}'}" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" FontSize="16" Margin="5,5,0,0" />
+                        <!--<TextBlock Text="{Binding Пол, StringFormat='Пол: {0}'}" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" FontSize="16" Margin="5,5,0,0" />-->
+                        <!--<TextBlock Text="{Binding Успеваемость, StringFormat='Успеваемость: {0}'}" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left" FontSize="16" Margin="7.5,0,0,0" />-->
+                        <!--<TextBlock Text="{Binding Год_рождения, StringFormat='Год рождения: {0:dd.MM.yyyy}'}" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" FontSize="16" Margin="5,5,0,0" />-->
+                        <!--<TextBlock Text="{Binding Адрес, StringFormat='Адрес проживания: {0}'}" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" FontSize="16" Margin="5,5,0,0" />-->
                         <TextBlock Text="{Binding Телефон, StringFormat='Телефон: {0}'}" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left" FontSize="16" Margin="5,-25,0,0" />
 
                         <!-- Кнопки -->
@@ -107,4 +107,5 @@
             </ListView.ItemTemplate>
         </ListView>
     </Grid>
+    
 </Page>
