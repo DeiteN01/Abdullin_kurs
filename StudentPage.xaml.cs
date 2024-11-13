@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -11,12 +12,12 @@ namespace Abdullin_kurs
         public StudentPage()
         {
             InitializeComponent();
-            var StudentsList = AbdullinDBEntities.GetContext().Студенты.ToList();
-            StudentListView.ItemsSource = StudentsList;
+            var studentsList = AbdullinDBEntities.GetContext().Студенты.ToList();
+            StudentListView.ItemsSource = studentsList;
             RangComboBox.SelectedIndex = 0;
             UpdateStudentPage();
-            int StudentsMaxCount = StudentsList.Count;
-            ProductMaxCountTextBlock.Text = StudentsMaxCount.ToString();
+            int studentsListCount = studentsList.Count;
+            ProductMaxCountTextBlock.Text = studentsListCount.ToString();
         }
 
         private void UpdateStudentPage()
@@ -64,7 +65,7 @@ namespace Abdullin_kurs
                     AverageScore = averageScore,
                     GroupName = groupName,
                     DepartmentName = departmentName,
-                    FacultyName = facultyName
+                    FacultyName = facultyName,
                 });
             }
 

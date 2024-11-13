@@ -1,54 +1,70 @@
-﻿using Microsoft.Win32;
-using System;
+﻿using System;
+using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+using Microsoft.Win32;
 
 namespace Abdullin_kurs
 {
     public partial class AddEditPage : Page
     {
-        private Студенты _currentChel;
+        private Студенты _modelStudent;
 
         // Конструктор для создания нового или редактирования существующего студента
-        public AddEditPage(StudentModel SelectedChel = null)
+        public AddEditPage(StudentModel studentModel = null)
         {
             InitializeComponent();
+            var dbEntities = AbdullinDBEntities.GetContext();
+            var groups = dbEntities.Учебные_группы.ToList();
+            _modelStudent = (studentModel == null || studentModel.Student == null)
+                ? new Студенты()
+                : studentModel.Student;
 
-            _currentChel = (SelectedChel == null || SelectedChel.Student == null) ? new Студенты() : SelectedChel.Student;
+            GroupComboBox.ItemsSource = groups;
 
-            DataContext = _currentChel;
+            DataContext = _modelStudent;
         }
 
         // Изменение фотографии студента
         private void ChangePictureBtn_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog myOpenFileDialog = new OpenFileDialog();
-            myOpenFileDialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp"; 
+            myOpenFileDialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp";
             if (myOpenFileDialog.ShowDialog() == true)
             {
-                _currentChel.Фото = myOpenFileDialog.FileName; 
-                LogoImage.Source = new BitmapImage(new Uri(myOpenFileDialog.FileName)); 
+                _modelStudent.Фото = myOpenFileDialog.FileName;
+                LogoImage.Source = new BitmapImage(new Uri(myOpenFileDialog.FileName));
             }
         }
+
+        private void GroupComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var selectedGroup = GroupComboBox.SelectedItem as Учебные_группы;
+            if (selectedGroup != null)
+            {
+                _modelStudent.Группа_ID = selectedGroup.Группа_ID;
+            }
+        }
+
 
         // Сохранение данных студента
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             StringBuilder errors = new StringBuilder(); // Собирать все ошибки в строку
 
-            if (string.IsNullOrWhiteSpace(_currentChel.Фамилия)) 
+            if (string.IsNullOrWhiteSpace(_modelStudent.Фамилия))
             {
                 errors.AppendLine("Укажите фамилию студента");
             }
 
-            if (_currentChel.Группа_ID <= 0) 
+            if (_modelStudent.Группа_ID <= 0)
             {
                 errors.AppendLine("Укажите группу студента");
             }
 
-            if (string.IsNullOrWhiteSpace(_currentChel.Отчество))
+            if (string.IsNullOrWhiteSpace(_modelStudent.Отчество))
             {
                 errors.AppendLine("Укажите отчество студента");
             }
@@ -58,10 +74,10 @@ namespace Abdullin_kurs
                 MessageBox.Show(errors.ToString());
                 return;
             }
-           
-            if (_currentChel.Студент_ID == 0)
+
+            if (_modelStudent.Студент_ID == 0)
             {
-                AbdullinDBEntities.GetContext().Студенты.Add(_currentChel);
+                AbdullinDBEntities.GetContext().Студенты.Add(_modelStudent);
             }
 
             try
@@ -102,7 +118,6 @@ namespace Abdullin_kurs
         }
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-
         }
     }
 }
