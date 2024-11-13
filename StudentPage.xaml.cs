@@ -19,69 +19,71 @@ namespace Abdullin_kurs
             ProductMaxCountTextBlock.Text = StudentsMaxCount.ToString();
         }
 
-private void UpdateStudentPage()
-{
-    var students = AbdullinDBEntities.GetContext().Студенты.ToList();
-
-    // Поиск
-    students = students.Where(p => p.Фамилия.ToLower().Contains(SearchTextBox.Text.ToLower())).ToList();
-    
-    List<StudentWithAverageScore> studentsWithScores = new List<StudentWithAverageScore>();
-
-    foreach (var student in students)
-    {
-        double ScoreSum = 0;
-        double counter = 0;
-
-        foreach (var ведомость in student.Ведомость_успеваемости)
+        private void UpdateStudentPage()
         {
-            ScoreSum += double.Parse(ведомость.Оценка.ToString());
-            counter++;
+            var students = AbdullinDBEntities.GetContext().Студенты.ToList();
+
+            // Поиск
+            students = students.Where(p => p.Фамилия.ToLower().Contains(SearchTextBox.Text.ToLower())).ToList();
+
+            List<StudentWithAverageScore> studentsWithScores = new List<StudentWithAverageScore>();
+
+            foreach (var student in students)
+            {
+                double ScoreSum = 0;
+                double counter = 0;
+
+                foreach (var ведомость in student.Ведомость_успеваемости)
+                {
+                    ScoreSum += double.Parse(ведомость.Оценка.ToString());
+                    counter++;
+                }
+
+                double averageScore = counter > 0 ? ScoreSum / counter : 0;
+                averageScore = Math.Round(averageScore, 2); // Округление до двух знаков после запятой
+
+                studentsWithScores.Add(new StudentWithAverageScore
+                {
+                    Student = student,
+                    AverageScore = averageScore
+                });
+            }
+
+            // Сортировка по среднему баллу
+            if (RadioButtonUp.IsChecked.Value)
+            {
+                studentsWithScores = studentsWithScores.OrderBy(p => p.Student.Фамилия).ThenBy(p => p.Student.Имя).ToList();
+            }
+
+            if (RadioButtonDown.IsChecked.Value)
+            {
+                studentsWithScores = studentsWithScores.OrderByDescending(p => p.Student.Фамилия).ThenByDescending(p => p.Student.Имя).ToList();
+            }
+
+            // Фильтрация по среднему баллу
+            switch (RangComboBox.SelectedIndex)
+            {
+                case 0:
+                    break;
+                case 1:
+                    studentsWithScores = studentsWithScores.Where(p => p.AverageScore == 5.0).ToList();
+                    break;
+                case 2:
+                    studentsWithScores = studentsWithScores.Where(p => p.AverageScore >= 4 && p.AverageScore < 5)
+                        .ToList();
+                    break;
+                case 3:
+                    studentsWithScores = studentsWithScores.Where(p => p.AverageScore < 4).ToList();
+                    break;
+                default:
+                    break;
+            }
+
+            StudentListView.ItemsSource = studentsWithScores;
+
+            int StudentCount = studentsWithScores.Count;
+            StudentCountTextBlock.Text = StudentCount.ToString();
         }
-
-        double averageScore = counter > 0 ? ScoreSum / counter : 0;
-
-        studentsWithScores.Add(new StudentWithAverageScore
-        {
-            Student = student,
-            AverageScore = averageScore
-        });
-    }
-
-    // Сортировка по среднему баллу
-    if (RadioButtonUp.IsChecked.Value)
-    {
-        studentsWithScores = studentsWithScores.OrderBy(p => p.AverageScore).ToList();
-    }
-    if (RadioButtonDown.IsChecked.Value)
-    {
-        studentsWithScores = studentsWithScores.OrderByDescending(p => p.AverageScore).ToList();
-    }
-
-    // Фильтрация по среднему баллу
-    switch (RangComboBox.SelectedIndex)
-    {
-        case 0:
-            break;
-        case 1:
-            studentsWithScores = studentsWithScores.Where(p => p.AverageScore == 5.0).ToList();
-            break;
-        case 2:
-            studentsWithScores = studentsWithScores.Where(p => p.AverageScore >= 4 && p.AverageScore < 5).ToList();
-            break;
-        case 3:
-            studentsWithScores = studentsWithScores.Where(p => p.AverageScore < 4).ToList();
-            break;
-        default:
-            break;
-    }
-
-    StudentListView.ItemsSource = studentsWithScores;
-
-    int StudentCount = studentsWithScores.Count;
-    StudentCountTextBlock.Text = StudentCount.ToString();
-}
-
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
@@ -98,14 +100,14 @@ private void UpdateStudentPage()
             }
 
             if (MessageBox.Show("Вы точно хотите выполнить удаление?", "Внимание!",
-            MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                    MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
                 try
                 {
                     AbdullinDBEntities.GetContext().Студенты.Remove(currentClient);
                     AbdullinDBEntities.GetContext().SaveChanges();
                     MessageBox.Show("Запись успешно удалена.");
-                    UpdateStudentPage(); // Обновляем данные после успешного удаления
+                    UpdateStudentPage(); 
                 }
                 catch (Exception ex)
                 {

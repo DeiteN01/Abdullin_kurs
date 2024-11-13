@@ -29,8 +29,8 @@
             </StackPanel>
 
             <StackPanel Orientation="Vertical" Margin="10" HorizontalAlignment="Left">
-                <RadioButton Content="Год рождения по возрастанию" FontSize="15" Checked="RadioButtonUp_Checked" GroupName="Cost" Name="RadioButtonUp" />
-                <RadioButton Content="Год рождения по убыванию" FontSize="15" Checked="RadioButtonDown_Checked" GroupName="Cost" Name="RadioButtonDown" />
+                <RadioButton Content="ФИО в алфавитном порядке" FontSize="15" Checked="RadioButtonUp_Checked" GroupName="Cost" Name="RadioButtonUp" />
+                <RadioButton Content="ФИО с конца алфавита" FontSize="15" Checked="RadioButtonDown_Checked" GroupName="Cost" Name="RadioButtonDown" />
             </StackPanel>
 
             <StackPanel Orientation="Vertical" Margin="10" HorizontalAlignment="Right">
