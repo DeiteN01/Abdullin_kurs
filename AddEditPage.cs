@@ -25,11 +25,11 @@ namespace Abdullin_kurs
         private void ChangePictureBtn_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog myOpenFileDialog = new OpenFileDialog();
-            myOpenFileDialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp"; // Добавляем фильтр для изображений
+            myOpenFileDialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp"; 
             if (myOpenFileDialog.ShowDialog() == true)
             {
-                _currentChel.Фото = myOpenFileDialog.FileName; // Сохраняем путь к файлу в объекте
-                LogoImage.Source = new BitmapImage(new Uri(myOpenFileDialog.FileName)); // Отображаем изображение в UI
+                _currentChel.Фото = myOpenFileDialog.FileName; 
+                LogoImage.Source = new BitmapImage(new Uri(myOpenFileDialog.FileName)); 
             }
         }
 
@@ -38,29 +38,27 @@ namespace Abdullin_kurs
         {
             StringBuilder errors = new StringBuilder(); // Собирать все ошибки в строку
 
-            if (string.IsNullOrWhiteSpace(_currentChel.Фамилия)) // Проверка обязательных полей
+            if (string.IsNullOrWhiteSpace(_currentChel.Фамилия)) 
             {
                 errors.AppendLine("Укажите фамилию студента");
             }
 
-            if (_currentChel.Группа_ID <= 0) // Проверка на валидность группы
+            if (_currentChel.Группа_ID <= 0) 
             {
                 errors.AppendLine("Укажите группу студента");
             }
 
-            if (string.IsNullOrWhiteSpace(_currentChel.Отчество)) // Проверка на отчество
+            if (string.IsNullOrWhiteSpace(_currentChel.Отчество))
             {
                 errors.AppendLine("Укажите отчество студента");
             }
 
-            // Если есть ошибки, выводим их
             if (errors.Length > 0)
             {
                 MessageBox.Show(errors.ToString());
                 return;
             }
-
-            // Если это новый студент (ID == 0), добавляем его в базу
+           
             if (_currentChel.Студент_ID == 0)
             {
                 AbdullinDBEntities.GetContext().Студенты.Add(_currentChel);
@@ -68,10 +66,6 @@ namespace Abdullin_kurs
 
             try
             {
-                // Пытаемся сохранить изменения
-                //MessageBox.Show($"Фамилия: {_currentChel.Фамилия}, Группа_ID: {_currentChel.Группа_ID}, Год рождения: {_currentChel.Год_рождения?.ToString() ?? "null"}");
-
-                //_currentChel.Год_рождения = _currentChel.Год_рождения.Value;
                 AbdullinDBEntities.GetContext().SaveChanges();
                 MessageBox.Show("Информация сохранена");
                 Manager.MainFrame.GoBack(); // Возвращаемся на предыдущую страницу
@@ -106,7 +100,6 @@ namespace Abdullin_kurs
                 }
             }
         }
-
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
 
