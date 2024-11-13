@@ -83,7 +83,7 @@
     <Compile Include="StudentPage.xaml.cs">
       <DependentUpon>StudentPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="StudentWithAverageScore.cs" />
+    <Compile Include="StudentModel.cs" />
     <Compile Include="Ведомость_успеваемости.cs">
       <DependentUpon>AbdullinModel.tt</DependentUpon>
     </Compile>

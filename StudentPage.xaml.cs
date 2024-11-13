@@ -22,11 +22,11 @@ namespace Abdullin_kurs
         private void UpdateStudentPage()
         {
             var students = AbdullinDBEntities.GetContext().Студенты.ToList();
-
-            // Поиск
+            var dbEntities = AbdullinDBEntities.GetContext();
+            var groups = dbEntities.Учебные_группы;
             students = students.Where(p => p.Фамилия.ToLower().Contains(SearchTextBox.Text.ToLower())).ToList();
 
-            List<StudentWithAverageScore> studentsWithScores = new List<StudentWithAverageScore>();
+            List<StudentModel> studentModels = new List<StudentModel>();
 
             foreach (var student in students)
             {
@@ -39,25 +39,45 @@ namespace Abdullin_kurs
                     counter++;
                 }
 
-                double averageScore = counter > 0 ? ScoreSum / counter : 0;
-                averageScore = Math.Round(averageScore, 2); // Округление до двух знаков после запятой
+                var group = groups.FirstOrDefault(g => g.Студенты.Any(stud => stud.Студент_ID == student.Студент_ID));
+                string groupName = group != null ? group.Название_группы : "Группа не найдена";
 
-                studentsWithScores.Add(new StudentWithAverageScore
+                string departmentName = "Кафедра не найдена";
+                string facultyName = "Факультет не найден";
+
+                if (group != null && group.Кафедры != null)
+                {
+                    departmentName = group.Кафедры.Название_кафедры;
+
+                    if (group.Кафедры.Факультеты != null)
+                    {
+                        facultyName = group.Кафедры.Факультеты.Название_факультета;
+                    }
+                }
+
+                double averageScore = counter > 0 ? ScoreSum / counter : 0;
+                averageScore = Math.Round(averageScore, 2);
+
+                studentModels.Add(new StudentModel
                 {
                     Student = student,
-                    AverageScore = averageScore
+                    AverageScore = averageScore,
+                    GroupName = groupName,
+                    DepartmentName = departmentName,
+                    FacultyName = facultyName
                 });
             }
 
             // Сортировка по среднему баллу
             if (RadioButtonUp.IsChecked.Value)
             {
-                studentsWithScores = studentsWithScores.OrderBy(p => p.Student.Фамилия).ThenBy(p => p.Student.Имя).ToList();
+                studentModels = studentModels.OrderBy(p => p.Student.Фамилия).ThenBy(p => p.Student.Имя).ToList();
             }
 
             if (RadioButtonDown.IsChecked.Value)
             {
-                studentsWithScores = studentsWithScores.OrderByDescending(p => p.Student.Фамилия).ThenByDescending(p => p.Student.Имя).ToList();
+                studentModels = studentModels.OrderByDescending(p => p.Student.Фамилия)
+                    .ThenByDescending(p => p.Student.Имя).ToList();
             }
 
             // Фильтрация по среднему баллу
@@ -66,22 +86,22 @@ namespace Abdullin_kurs
                 case 0:
                     break;
                 case 1:
-                    studentsWithScores = studentsWithScores.Where(p => p.AverageScore == 5.0).ToList();
+                    studentModels = studentModels.Where(p => p.AverageScore == 5.0).ToList();
                     break;
                 case 2:
-                    studentsWithScores = studentsWithScores.Where(p => p.AverageScore >= 4 && p.AverageScore < 5)
+                    studentModels = studentModels.Where(p => p.AverageScore >= 4 && p.AverageScore < 5)
                         .ToList();
                     break;
                 case 3:
-                    studentsWithScores = studentsWithScores.Where(p => p.AverageScore < 4).ToList();
+                    studentModels = studentModels.Where(p => p.AverageScore < 4).ToList();
                     break;
                 default:
                     break;
             }
 
-            StudentListView.ItemsSource = studentsWithScores;
+            StudentListView.ItemsSource = studentModels;
 
-            int StudentCount = studentsWithScores.Count;
+            int StudentCount = studentModels.Count;
             StudentCountTextBlock.Text = StudentCount.ToString();
         }
 
@@ -92,7 +112,7 @@ namespace Abdullin_kurs
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            var currentClient = (StudentListView.SelectedItem as StudentWithAverageScore).Student;
+            var currentClient = (StudentListView.SelectedItem as StudentModel).Student;
             if (currentClient == null)
             {
                 MessageBox.Show("Пожалуйста, выберите запись для удаления.");
@@ -107,7 +127,7 @@ namespace Abdullin_kurs
                     AbdullinDBEntities.GetContext().Студенты.Remove(currentClient);
                     AbdullinDBEntities.GetContext().SaveChanges();
                     MessageBox.Show("Запись успешно удалена.");
-                    UpdateStudentPage(); 
+                    UpdateStudentPage();
                 }
                 catch (Exception ex)
                 {
@@ -118,7 +138,7 @@ namespace Abdullin_kurs
 
         private void EditButton_Click(object sender, RoutedEventArgs e)
         {
-            Manager.MainFrame.Navigate(new AddEditPage((sender as Button).DataContext as StudentWithAverageScore));
+            Manager.MainFrame.Navigate(new AddEditPage((sender as Button).DataContext as StudentModel));
             UpdateStudentPage();
         }
 

@@ -12,7 +12,7 @@ namespace Abdullin_kurs
         private Студенты _currentChel;
 
         // Конструктор для создания нового или редактирования существующего студента
-        public AddEditPage(StudentWithAverageScore SelectedChel = null)
+        public AddEditPage(StudentModel SelectedChel = null)
         {
             InitializeComponent();
 
