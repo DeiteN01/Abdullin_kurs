@@ -22,6 +22,11 @@ namespace Abdullin_kurs
                 ? new Студенты()
                 : studentModel.Student;
 
+            if (_modelStudent.Студент_ID == 0)
+            {
+                DeleteButton.Visibility = Visibility.Hidden;
+            }
+
             GroupComboBox.ItemsSource = groups;
 
             DataContext = _modelStudent;
