@@ -113,12 +113,13 @@ namespace Abdullin_kurs
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            var currentClient = (StudentListView.SelectedItem as StudentModel).Student;
-            if (currentClient == null)
+            var selectedStudent = StudentListView.SelectedItem as StudentModel;
+            if (selectedStudent == null)
             {
                 MessageBox.Show("Пожалуйста, выберите запись для удаления.");
                 return;
             }
+            var currentClient = selectedStudent.Student;
 
             if (MessageBox.Show("Вы точно хотите выполнить удаление?", "Внимание!",
                     MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)

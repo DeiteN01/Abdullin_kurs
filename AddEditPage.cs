@@ -11,16 +11,15 @@ namespace Abdullin_kurs
     public partial class AddEditPage : Page
     {
         private Студенты _modelStudent;
+        private readonly AbdullinDBEntities _dbContext;
 
-        // Конструктор для создания нового или редактирования существующего студента
         public AddEditPage(StudentModel studentModel = null)
         {
             InitializeComponent();
-            var dbEntities = AbdullinDBEntities.GetContext();
-            var groups = dbEntities.Учебные_группы.ToList();
-            _modelStudent = (studentModel == null || studentModel.Student == null)
-                ? new Студенты()
-                : studentModel.Student;
+            _dbContext = AbdullinDBEntities.GetContext();
+
+            var groups = _dbContext.Учебные_группы.ToList();
+            _modelStudent = studentModel?.Student ?? new Студенты();
 
             if (_modelStudent.Студент_ID == 0)
             {
@@ -28,7 +27,6 @@ namespace Abdullin_kurs
             }
 
             GroupComboBox.ItemsSource = groups;
-
             DataContext = _modelStudent;
         }
 
@@ -101,15 +99,19 @@ namespace Abdullin_kurs
         // Удаление студента
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
-            var currentChel = (sender as Button).DataContext as Студенты;
+            if (_modelStudent == null || _modelStudent.Студент_ID == 0)
+            {
+                MessageBox.Show("Выделите студента для удаления");
+                return;
+            }
 
             if (MessageBox.Show("Вы точно хотите выполнить удаление?", "Внимание!",
-                MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                    MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
                 try
                 {
                     // Удаляем студента из базы данных
-                    AbdullinDBEntities.GetContext().Студенты.Remove(currentChel);
+                    AbdullinDBEntities.GetContext().Студенты.Remove(_modelStudent);
                     AbdullinDBEntities.GetContext().SaveChanges();
                     MessageBox.Show("Студент удалён");
                     Manager.MainFrame.GoBack(); // Возвращаемся на страницу студентов
@@ -121,6 +123,7 @@ namespace Abdullin_kurs
                 }
             }
         }
+
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
         }
